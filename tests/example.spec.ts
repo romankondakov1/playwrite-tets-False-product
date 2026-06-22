@@ -24,14 +24,15 @@ test('Create product', async ({ request }) => {
     }
   });
 
-  expect(createResponse.status()).toBe(201);
+  
   const jsonData = await createResponse.json();
   const productId = jsonData.id;
   expect(jsonData.title).toBe(uniqueTitle);
+  expect(createResponse.status()).toBe(201);
 
   const getResponse = await request.get(
     `https://api.escuelajs.co/api/v1/products/${productId}`,
-    { failOnStatusCode: false }
+    { failOnStatusCode: true }
   );
 
   expect(getResponse.status()).toBe(200);
@@ -52,15 +53,17 @@ test('Get products id after creation', async ({ request }) => {
     }
   });
 
-  expect(createResponse.status()).toBe(201);
+  
   const jsonData = await createResponse.json();
   const productId = jsonData.id;
   expect(jsonData.title).toBe(uniqueTitle);
+  expect(createResponse.status()).toBe(201);
 
   const getResponse = await request.get(`https://api.escuelajs.co/api/v1/products/${productId}`, { failOnStatusCode: false });
-  expect(getResponse.status()).toBe(200);
+  
   const product = await getResponse.json();
   expect(product.id).toBe(productId);
+  expect(getResponse.status()).toBe(200);
 });
 
 test('Update product', async ({ request }) => {
