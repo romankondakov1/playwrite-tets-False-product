@@ -20,9 +20,13 @@ test.describe('Products API', () => {
       }
     });
 
-    expect(response.status()).toBe(201);
-
     const body = await response.json();
+    expect.soft(response.status()).toBe(201);
+    expect.soft(body).toHaveProperty('title', productTitle);
+    expect.soft(body).toHaveProperty('price', 350);
+    expect.soft(body).toHaveProperty('description', 'Best Product ever');
+  
+    
     productId = body.id;
   });
 
@@ -38,9 +42,9 @@ test.describe('Products API', () => {
     expect(response.status()).toBe(200);
 
     const product = await response.json();
-
-    expect(product.id).toBe(productId);
-    expect(product.title).toBe(productTitle);
+    expect.soft(response.status()).toBe(200);
+    expect.soft(product).toHaveProperty('title', productTitle);
+    expect.soft(product).toHaveProperty('price', 350);
   });
 
   test('Update product', async ({ request }) => {
@@ -56,12 +60,11 @@ test.describe('Products API', () => {
       }
     });
 
-    expect(response.status()).toBe(200);
-
     const body = await response.json();
 
-    expect(body.title).toBe(updatedTitle);
-    expect(body.price).toBe(250);
+    expect.soft(response.status()).toBe(200);
+    expect.soft(body).toHaveProperty('title', updatedTitle);
+    expect.soft(body).toHaveProperty('price', 250);
   });
 
   test('Delete product', async ({ request }) => {
@@ -74,7 +77,7 @@ test.describe('Products API', () => {
       { failOnStatusCode: false }
     );
 
-    expect(getResponse.status()).toBe(400);
+    expect.soft(getResponse.status()).toBe(400);
 
     productId = 0; // чтобы afterEach не пытался удалить повторно
   });
