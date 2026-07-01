@@ -101,24 +101,27 @@ test.describe('Users API', { tag: '@Users' }, () => {
 
     await test.step('Create user', async () => {
 
+      const email = `roma_${Date.now()}@gmail.com`;
+
       const response = await request.post(BASE_URL_USERS, {
         data: {
           name: 'Roman',
-          email: `roma_${Date.now()}@gmail.com`,
+          email,
           password: '1234',
           avatar: 'https://picsum.photos/880'
         }
       });
 
-      expect(response.status()).toBe(201);
-
       const body = await response.json();
+
+      expect(response.status()).toBe(201);
+      expect.soft(response.headers()['content-type']).toContain('application/json');
+      expect.soft(body).toHaveProperty('name', 'Roman');
+      expect.soft(body).toHaveProperty('email', email);
 
       userId = body.id;
       userName = body.name;
       userEmail = body.email;
-
-      expect(body.name).toBe('Roman');
     });
 
   });
@@ -148,9 +151,9 @@ test.describe('Users API', { tag: '@Users' }, () => {
 
       const body = await response.json();
 
-      expect(body.id).toBe(userId);
-      expect(body.name).toBe(userName);
-      expect(body.email).toBe(userEmail);
+      expect.soft(body.id).toBe(userId);
+      expect.soft(body.name).toBe(userName);
+      expect.soft(body.email).toBe(userEmail);
 
     });
 
@@ -171,6 +174,9 @@ test.describe('Users API', { tag: '@Users' }, () => {
       });
 
       expect(response.status()).toBe(200);
+      expect.soft(response.headers()['content-type']).toContain('application/json');
+      expect.soft(await response.json()).toHaveProperty('name', updatedName);
+      expect.soft(await response.json()).toHaveProperty('email', updatedEmail);
 
     });
 
