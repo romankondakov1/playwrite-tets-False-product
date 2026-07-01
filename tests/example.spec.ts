@@ -5,9 +5,7 @@ const BASE_URL_USERS = 'https://api.escuelajs.co/api/v1/users';
 
 let productId: number;
 let productTitle: string;
-let userId: number;
-let userName: string;
-let userEmail: string;
+
 
 
 test.describe('Products API', { tag: '@Products' }, () => {
